@@ -111,6 +111,14 @@ public final class GridGraph implements GridGraph2D {
      * @param graph Un graphe.
      */
     public static void bindAll(GridGraph graph) {
-        // TODO: A implémenter
+        for (int line = 0; line < graph.height; line++) {
+            for (int column = 0; column < graph.width; column++) {
+                if (line != graph.height - 1)
+                    graph.addEdge(line * graph.width + column, (line + 1) * graph.width + column);
+                if (column != graph.width - 1)
+                    graph.addEdge(line * graph.width + column, line * graph.width + column + 1);
+            }
+        }
+
     }
 }
