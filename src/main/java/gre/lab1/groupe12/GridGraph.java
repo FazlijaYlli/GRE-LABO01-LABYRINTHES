@@ -47,12 +47,14 @@ public final class GridGraph implements GridGraph2D {
         this.height = height;
 
         neighbors = new ArrayList<>(width * height);
+        for (int i = 0; i < width * height; ++i) {
+            neighbors.add(new LinkedList<>());
+        }
     }
 
     @Override
     public List<Integer> neighbors(int v) {
-
-        return new ArrayList<>(neighbors.get(v));
+        return neighbors.get(v);
     }
 
     @Override
@@ -69,7 +71,6 @@ public final class GridGraph implements GridGraph2D {
 
     @Override
     public void addEdge(int u, int v) {
-
         if (!neighbors.get(u).contains(v)) {
             neighbors.get(u).add(v);
             neighbors.get(v).add(u);
@@ -112,11 +113,7 @@ public final class GridGraph implements GridGraph2D {
      */
     public static void bindAll(GridGraph graph) {
         for (int i = 0; i < graph.nbVertices(); ++i) {
-            if ((i % graph.width + i / graph.width) % 2 == 0) {
-                for (Integer j : graph.neighbors(i)) {
-                    graph.addEdge(i, j);
-                }
-            }
+            if ((i % graph.width + i / graph.width) % 2 == 0) for (Integer j : graph.neighbors(i)) graph.addEdge(i, j);
         }
     }
 }
