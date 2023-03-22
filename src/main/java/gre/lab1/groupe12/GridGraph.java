@@ -79,7 +79,6 @@ public final class GridGraph implements GridGraph2D {
 
     @Override
     public void removeEdge(int u, int v) {
-
         if (neighbors.get(u).contains(v)) {
             neighbors.get(u).removeFirstOccurrence(v);
             neighbors.get(v).removeFirstOccurrence(u);
@@ -112,8 +111,13 @@ public final class GridGraph implements GridGraph2D {
      * @param graph Un graphe.
      */
     public static void bindAll(GridGraph graph) {
-        for (int i = 0; i < graph.nbVertices(); ++i) {
-            if ((i % graph.width + i / graph.width) % 2 == 0) for (Integer j : graph.neighbors(i)) graph.addEdge(i, j);
+        for (int line = 0; line < graph.height; line++) {
+            for (int column = 0; column < graph.width; column++) {
+                if (line != graph.height - 1)
+                    graph.addEdge(line * graph.width + column, (line + 1) * graph.width + column);
+                if (column != graph.width - 1)
+                    graph.addEdge(line * graph.width + column, line * graph.width + column + 1);
+            }
         }
     }
 }

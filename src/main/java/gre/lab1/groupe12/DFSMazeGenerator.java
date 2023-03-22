@@ -21,11 +21,7 @@ public final class DFSMazeGenerator implements MazeGenerator {
     //  supprimant des murs.
 
     // ai essayé d'implémenter https://fr.wikipedia.org/wiki/Algorithme_de_parcours_en_profondeur
-    while (builder.topology().vertexExists(from)) {
-      if (builder.progressions().getLabel(from) == Progression.PENDING) {
-        explore(builder, from++);
-      }
-    }
+    explore(builder, from);
   }
 
   private void explore(MazeBuilder builder, int from) {
@@ -33,11 +29,11 @@ public final class DFSMazeGenerator implements MazeGenerator {
     List<Integer> n = builder.topology().neighbors(from);
     Collections.shuffle(n);
     for (int vertex : n) {
-      builder.removeWall(from, vertex);
       if (builder.progressions().getLabel(vertex) == Progression.PENDING) {
+        builder.removeWall(from, vertex);
         explore(builder, vertex);
-        builder.progressions().setLabel(vertex, Progression.PROCESSED);
       }
     }
+    builder.progressions().setLabel(from, Progression.PROCESSED);
   }
 }
