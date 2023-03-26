@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-// TODO: javadoc
 public final class GridGraph implements GridGraph2D {
     /**
      * Largeur de la grille.
@@ -25,7 +24,6 @@ public final class GridGraph implements GridGraph2D {
 
     /**
      * Construit une grille carrée.
-     *
      * @param side Côté de la grille.
      */
     public GridGraph(int side) {
@@ -46,6 +44,7 @@ public final class GridGraph implements GridGraph2D {
         this.width = width;
         this.height = height;
 
+        // Initialisation des listes d'adjacences vides
         neighbors = new ArrayList<>(width * height);
         for (int i = 0; i < width * height; ++i) {
             neighbors.add(new LinkedList<>());
@@ -59,7 +58,6 @@ public final class GridGraph implements GridGraph2D {
 
     @Override
     public boolean areAdjacent(int u, int v) {
-
         if (neighbors.get(u).isEmpty()) return false;
 
         for (int x : neighbors.get(u)) {
@@ -71,6 +69,7 @@ public final class GridGraph implements GridGraph2D {
 
     @Override
     public void addEdge(int u, int v) {
+        // Lors de l'ajout d'une arête au graphe, il faut bien l'ajouter dans les deux sens.
         if (!neighbors.get(u).contains(v)) {
             neighbors.get(u).add(v);
             neighbors.get(v).add(u);
@@ -79,6 +78,7 @@ public final class GridGraph implements GridGraph2D {
 
     @Override
     public void removeEdge(int u, int v) {
+        // Lors de la suppression d'une arête au graphe, il faut bien la supprimer dans les deux sens.
         if (neighbors.get(u).contains(v)) {
             neighbors.get(u).removeFirstOccurrence(v);
             neighbors.get(v).removeFirstOccurrence(u);
@@ -107,12 +107,11 @@ public final class GridGraph implements GridGraph2D {
 
     /**
      * Lie chaque sommet du graphe donné à tous ses voisins dans la grille.
-     *
      * @param graph Un graphe.
      */
     public static void bindAll(GridGraph graph) {
-        for (int line = 0; line < graph.height; line++) {
-            for (int column = 0; column < graph.width; column++) {
+        for (int line = 0; line < graph.height; ++line) {
+            for (int column = 0; column < graph.width; ++column) {
                 if (line != graph.height - 1)
                     graph.addEdge(line * graph.width + column, (line + 1) * graph.width + column);
                 if (column != graph.width - 1)
